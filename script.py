@@ -11,13 +11,18 @@ data = Dataset.load_builtin('ml-100k')
 # # Run 5-fold cross-validation and print results.
 # cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
 train = data.build_full_trainset()
-algo = KNNBasic(k=4, min_k=2, verbose=True)
+sim_options = {'name': 'cosine',
+               'user_based': False  # compute  similarities between items
+               }
+algo = KNNBasic(sim_options=sim_options)
+
+algo.fit(train)
 import pdb
 pdb.set_trace()
-algo.fit(train)
 
-uid = '10'
+uid = '196'
+iid = '242'
 
-pred = algo.predict(uid=uid, iid="", r_ui=0, verbose=True)
+pred = algo.predict(uid=uid, iid=iid, r_ui=0, verbose=True)
 
 print(pred)
