@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hello Horld</title>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href='/css/app.css'/>
+    </head>
+    <body>
+        <div class="input">
+            <form id="form" action="/api/users" onsubmit="return get_results(event)">
+                <select name="user" id="users" required>
+                        <option value="" disabled selected>
+                            Selecione o id...
+                        </option>
+                </select>
+                <button type="submit">Pesquisar</button>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <div id="relateds" class="results">
+                resultados
+            </div>
+            <div class="results">
+                interpretação
+            </div>
+        </div>
+        <script src="/js/app.js"></script>
+    </body>
+</html>
