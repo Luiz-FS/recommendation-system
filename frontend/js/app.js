@@ -2,15 +2,20 @@ function request(url) {
     return fetch(url).then(response => response.json());
 }
 
+let form = document.getElementById('form');
+
 function get_results(event) {
-    let relateds = document.getElementById('relateds');
-    relateds.innerText = "Deu certo";
-    console.log(form.action);
-    console.log(event)
+    let results = document.getElementById('results');
+
+    request('/api/results' + `?uid=${form.user.value}`).then(data => {
+        let li = "";
+        li = data.result.reduce((movies, movie) => {
+            return movies + `<li>${movie}</li>`
+        }, li);
+        results.innerHTML = li;
+    });
     return false;
 }
-
-let form = document.getElementById('form');
 
 //form.onsubmit = get_results;
 
