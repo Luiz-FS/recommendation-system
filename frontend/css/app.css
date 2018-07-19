@@ -30,3 +30,36 @@
     font-weight: bold;
     font-size: 18px;
 }
+
+select {
+    background-color: white;
+    border-bottom-color: green;
+    height: 30px;
+    padding: 7px;
+    box-shadow: 1px 1px 1px 0 rgba(0,0,0,1);
+}
+
+button {
+    width: 100px;
+    height: 30px;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    color: black;
+    background-color: white;
+    border: 0;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px 0 rgba(0,0,0,1);
+}
+  
+@keyframes buttonHover {
+    from {background-color: white; color: black;}
+    to {background-color: #00C853; color: white;}
+}
+  
+button:hover {
+    animation-name: buttonHover;
+    animation-duration: 0.5s;
+    background-color: #00C853;
+    color: white;
+}
