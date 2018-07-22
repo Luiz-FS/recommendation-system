@@ -10,17 +10,9 @@ item_data = items_stream.read().split('\n')
 item_data = list(map(lambda item: item.split('|')[:2], item_data))
 items_stream.close()
 
-data_stream = open('ml-100k/u1.base', 'r')
-data_list = data_stream.read().split('\n')
-data_list = list(map(lambda case: case.split('\t')[:2], data_list))
-data_list = data_list[:len(data_list) -1]
-data_stream.close()
-
-user_id, item_id = zip(*data_list)
-user_set = set(user_id)
-item_set = set(item_id)
-
-database = pd.DataFrame({'user_id': user_id, 'item_id': item_id})
+database = pd.read_csv('ml-100k/u1.base.csv')
+user_set = set(database.user_id)
+item_set = set(database.item_id)
 not_watch = {user: item_set.difference(database.query('user_id == %s' %(user)).item_id) for user in user_set}
 
 # path to dataset folder
@@ -53,10 +45,10 @@ for trainset, testset in pkf.split(data):
 
 def get_top_5(uid):
     top = []
-    items = not_watch[uid]
+    items = not_watch[int(uid)]
     
     for item in items:
-        top.append((item, algo.predict(uid=uid, iid=item).est))
+        top.append((item, algo.predict(uid=uid, iid=str(item)).est))
     
     return sorted(top, key=lambda item: item[1], reverse=True)[:5]
 
