@@ -16,12 +16,12 @@
     function change_explication_content(neighbors) {
         const explication_text = document.getElementById('explication_text');
         const neighbors_element = document.getElementById('neighbors');
-        const explication = "Você recebeu essas recomendações de filmes de acordo"
-                        + "com a nota que outros usuários que tem um perfis"
+        const explication = "Você recebeu essas recomendações de filmes de acordo "
+                        + "com a nota que outros usuários que tem perfis "
                         + "similares a seu atribuiram a filme. "
-                        + "Os filmes recomendados tem as maiores notas"
-                        + "atribuidas por estes usuários."
-                        + "Os 5 usuários com perfís mais similares estão listados abaixo:";
+                        + "Os filmes recomendados são os que possuem as maiores notas "
+                        + "atribuidas por estes usuários. "
+                        + "Os 5 usuários com perfis mais similares estão listados abaixo:";
         
         explication_text.innerText = explication;
         change_list_content(neighbors, neighbors_element);
