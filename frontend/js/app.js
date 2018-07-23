@@ -7,10 +7,9 @@
     }
 
     function change_list_content(list, element) {
-        let li = "";
-        li = list.reduce((elements, value) => {
+        const li = list.reduce((elements, value) => {
             return elements + `<li>${value}</li>`;
-        }, li);
+        }, "");
         element.innerHTML = li;
     }
 
@@ -45,10 +44,9 @@
         form.onsubmit = get_results;
         request('/api/users').then(data => {
             const usersSelect = document.getElementById('users');
-            let options = usersSelect.innerHTML;
-            options = data.users_id.reduce((options, userId) => {
+            const options = data.users_id.reduce((options, userId) => {
                 return options + `<option value=${userId}>${userId}</option>`;
-            }, options);
+            }, usersSelect.innerHTML);
 
             usersSelect.innerHTML = options;
         });
