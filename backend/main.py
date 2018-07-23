@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import webapp2
 import json
-from . import get_top_5_movies, user_set, get_top2_5_movies
+from . import get_top_5_movies_knn, user_set, get_top_5_movies_svd
 
 __all__ = ['app']
 
@@ -12,8 +12,8 @@ class ResultsHandler(webapp2.RequestHandler):
         """
         uid = self.request.get('uid')
         message = {
-            'result': get_top_5_movies(uid),
-            'result2': get_top2_5_movies(uid)
+            'result_knn': get_top_5_movies_knn(uid),
+            'result_svd': get_top_5_movies_svd(uid)
         }
 
         self.response.headers['Content-Type'] = 'application/json; charset=utf-8'

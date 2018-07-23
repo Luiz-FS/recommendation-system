@@ -3,7 +3,7 @@ import os
 from surprise import Dataset, KNNBasic, Reader, accuracy, SVD
 from surprise.model_selection import cross_validate, PredefinedKFold
 
-__all__ = ['get_top_5_movies', 'user_set', 'get_top2_5_movies']
+__all__ = ['get_top_5_movies_knn', 'user_set', 'get_top_5_movies_svd']
 
 items_stream = open('ml-100k/u.item', 'r')
 item_data = items_stream.read().split('\n')
@@ -35,40 +35,40 @@ sim_options = {
     'user_based': True  # compute  similarities between items
 }
 
-algo = KNNBasic(sim_options=sim_options, k=4, min_k=2)
-algo2 = SVD()
+algo_knn = KNNBasic(sim_options=sim_options, k=4, min_k=2)
+algo_svd = SVD()
 
 for trainset, testset in pkf.split(data):
 
     # train and test algorithm.
-    algo.fit(trainset)
-    algo2.fit(trainset)
+    algo_knn.fit(trainset)
+    algo_svd.fit(trainset)
 
 
-def get_top_5(uid):
+def get_top_5_knn(uid):
     top = []
     items = not_watch[int(uid)]
     
     for item in items:
-        top.append((item, algo.predict(uid=uid, iid=str(item)).est))
+        top.append((item, algo_knn.predict(uid=uid, iid=str(item)).est))
     
     return sorted(top, key=lambda item: item[1], reverse=True)[:5]
 
 
-def get_top_5_movies(uid):
-    top_5 = get_top_5(uid)
+def get_top_5_movies_knn(uid):
+    top_5 = get_top_5_knn(uid)
     return [item_data[int(item[0])][1] for item in top_5]
 
-def get_top2_5(uid):
+def get_top_5_svd(uid):
     top = []
     items = not_watch[int(uid)]
     
     for item in items:
-        top.append((item, algo2.predict(uid=uid, iid=str(item)).est))
+        top.append((item, algo_svd.predict(uid=uid, iid=str(item)).est))
     
     return sorted(top, key=lambda item: item[1], reverse=True)[:5]
 
 
-def get_top2_5_movies(uid):
-    top_5 = get_top2_5(uid)
+def get_top_5_movies_svd(uid):
+    top_5 = get_top_5_svd(uid)
     return [item_data[int(item[0])][1] for item in top_5]

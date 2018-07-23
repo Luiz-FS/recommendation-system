@@ -1,36 +1,41 @@
-'use strict';
-
-function request(url) {
-    return fetch(url).then(response => response.json());
-}
-
-function get_results(event) {
+(function() {
+    'use strict';
     let form = document.getElementById('form');
-    let movies = document.getElementById('movies');
-    let movies2 = document.getElementById('movies2');
 
-    request('/api/results' + `?uid=${form.user.value}`).then(data => {
+    function request(url) {
+        return fetch(url).then(response => response.json());
+    }
+
+    function change_results_content(result, element) {
         let li = "";
-        li = data.result.reduce((movies, movie) => {
+        li = result.reduce((movies, movie) => {
             return movies + `<li>${movie}</li>`;
         }, li);
-        movies.innerHTML = li;
+        element.innerHTML = li;
+    }
 
-        li = "";
-        li = data.result2.reduce((movies, movie) => {
-            return movies + `<li>${movie}</li>`;
-        }, li);
-        movies2.innerHTML = li;
-    });
-    return false;
-}
+    function get_results() {
+        let movies_knn = document.getElementById('movies_knn');
+        let movies_svd = document.getElementById('movies_svd');
 
-request('/api/users').then(data => {
-    let usersSelect = document.getElementById('users');
-    let options = usersSelect.innerHTML;
-    options = data.users_id.reduce((options, userId) => {
-        return options + `<option value=${userId}>${userId}</option>`;
-    }, options);
+        request(`/api/results?uid=${form.user.value}`).then(data => {
+            change_results_content(data.result_knn, movies_knn);
+            change_results_content(data.result_svd, movies_svd);
+        });
+        return false;
+    }
 
-    usersSelect.innerHTML = options;
-});
+
+    (function main() {
+        form.onsubmit = get_results;
+        request('/api/users').then(data => {
+            let usersSelect = document.getElementById('users');
+            let options = usersSelect.innerHTML;
+            options = data.users_id.reduce((options, userId) => {
+                return options + `<option value=${userId}>${userId}</option>`;
+            }, options);
+
+            usersSelect.innerHTML = options;
+        });
+    })();
+})();
