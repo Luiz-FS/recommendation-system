@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import webapp2
 import json
-from . import get_top_5_movies_knn, user_set, get_top_5_movies_svd
+from . import get_top_5_movies_knn, user_set, get_top_5_movies_svd, get_top_5_neighbors
 
 __all__ = ['app']
 
@@ -11,13 +11,14 @@ class ResultsHandler(webapp2.RequestHandler):
         Método para gerênciar requisições GET.
         """
         uid = self.request.get('uid')
-        message = {
+        response = {
             'result_knn': get_top_5_movies_knn(uid),
-            'result_svd': get_top_5_movies_svd(uid)
+            'result_svd': get_top_5_movies_svd(uid),
+            'neighbors': sorted(list(map(int, get_top_5_neighbors(uid))))
         }
 
         self.response.headers['Content-Type'] = 'application/json; charset=utf-8'
-        self.response.write(json.dumps(message))
+        self.response.write(json.dumps(response))
 
 
 class UsersIdHandler(webapp2.RequestHandler):

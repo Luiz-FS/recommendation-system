@@ -9,7 +9,7 @@
     margin: 8px auto 8px auto;
 }
 
-.results p {
+.results .title {
     font-weight: bold;
     font-size: 18px;
     text-align: center;
@@ -62,4 +62,8 @@ button:hover {
     animation-duration: 0.5s;
     background-color: #00C853;
     color: white;
+}
+
+ul {
+    text-align: initial;
 }
