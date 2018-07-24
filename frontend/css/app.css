@@ -66,3 +66,34 @@ button:hover {
 ul {
     text-align: initial;
 }
+
+@media only screen and (max-device-width: 600px) {
+    #results_box {
+        text-align: center;
+        display: block;
+    }
+
+    .results {
+        width: 98%;
+    }
+
+    .results .title {
+        font-size: xx-large;
+    }
+
+    .input {
+        width: 100%;
+    }
+
+    select {
+        height: 100px;
+        width: 350px;
+        font-size: 40px;
+    }
+    
+    button {
+        width: 260px;
+        height: 100px;
+        font-size: 40px;
+    }
+}
