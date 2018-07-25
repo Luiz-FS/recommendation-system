@@ -4,7 +4,24 @@ import json
 import os
 from backend import get_top_5_movies_knn, user_set, get_top_5_movies_svd, get_top_5_neighbors
 
-__all__ = ['app']
+def read_file(path):
+    path = os.path.dirname(os.path.realpath(__file__)) + '/frontend' + path
+    file_stream = open(path, 'r')
+    data = file_stream.read()
+    file_stream.close()
+    return data
+
+def get_content_type(file):
+    switch = {
+        'js': 'application/javascript',
+        'css': 'text/css',
+        'html': 'text/html',
+        'default': ''
+    }
+
+    file_type = file.split(".")[-1]
+    return switch.get(file_type, switch['default'])
+
 
 class ResultsHandler(webapp2.RequestHandler):
     def get(self):
@@ -34,32 +51,29 @@ class UsersIdHandler(webapp2.RequestHandler):
 
 class IndexHandler(webapp2.RequestHandler):
     def get(self):
-        path = os.path.dirname(os.path.realpath(__file__))
-        index_stream = open(path + '/frontend/index.html', 'r')
-        index = index_stream.read()
-        index_stream.close()
-        self.response.write(index)
+        path = '/index.html'
+        data = read_file(path)
+
+        self.response.headers['Content-Type'] = get_content_type(path.split('/')[-1])
+        self.response.write(data)
 
 class StaticsFilesHandler(webapp2.RequestHandler):
     def get(self):
-        path = os.path.dirname(os.path.realpath(__file__)) + '/frontend'
-        path += self.request.path
-        file_stream = open(path, 'r')
-        data = file_stream.read()
-        file_stream.close()
 
-        if 'js' in path:
-            self.response.headers['Content-Type'] = 'application/javascript'
-        else:
-            self.response.headers['Content-Type'] = 'text/css'
+        try:
+            path = self.request.path
+            data = read_file(path)
 
-        self.response.write(data)
+            self.response.headers['Content-Type'] = get_content_type(path.split('/')[-1])
+            self.response.write(data)
+        except:
+            self.response.status = 404
         
 
 app = webapp2.WSGIApplication([
+    ('/', IndexHandler),
     ('/api/results.*', ResultsHandler),
     ('/api/users', UsersIdHandler),
-    ('/', IndexHandler),
     ('/.*', StaticsFilesHandler)
 ], debug=True)
 
