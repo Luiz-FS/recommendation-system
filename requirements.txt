@@ -1,3 +1,7 @@
-numpy==1.14.5
-pandas==0.23.3
-scikit-surprise==1.0.6
+numpy
+pandas
+scikit-surprise
+webapp2
+Paste
+WebOb
+gunicorn
