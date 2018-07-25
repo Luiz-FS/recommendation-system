@@ -1,9 +1,9 @@
 import pandas as pd
 import os
 from surprise import Dataset, KNNBasic, Reader, accuracy, SVD
-from surprise.model_selection import cross_validate, PredefinedKFold
+from surprise.model_selection import PredefinedKFold
 
-__all__ = ['get_top_5_movies_knn', 'user_set', 'get_top_5_movies_svd', 'get_top_5_neighbors']
+__all__ = ['get_top_5_movies_knn', 'user_set', 'get_top_5_movies_svd', 'get_top_5_neighbors', 'get_rmse']
 
 items_stream = open('ml-100k/u.item', 'r')
 item_data = items_stream.read().split('\n')
@@ -43,6 +43,10 @@ for trainset, testset in pkf.split(data):
     # train and test algorithm.
     algo_knn.fit(trainset)
     algo_svd.fit(trainset)
+    predictions_knn = algo_knn.test(testset)
+    predictions_svd = algo_svd.test(testset)
+    rmse_knn = accuracy.rmse(predictions_knn)
+    rmse_svd = accuracy.rmse(predictions_svd)
 
 
 def get_top_5_knn(uid):
@@ -78,3 +82,9 @@ def get_top_5_neighbors(uid):
     inner_uid = algo_knn.trainset.to_inner_uid(uid)
     neighbords = algo_knn.get_neighbors(iid=inner_uid, k=5)
     return [algo_knn.trainset.to_raw_uid(iid) for iid in neighbords]
+
+def get_rmse():
+    return {
+        'rmse_knn': '%.2f' % rmse_knn,
+        'rmse_svd': '%.2f' % rmse_svd
+    }
