@@ -32,7 +32,7 @@ class ResultsHandler(webapp2.RequestHandler):
         response = {
             'result_knn': get_top_5_movies_knn(uid),
             'result_svd': get_top_5_movies_svd(uid),
-            'neighbors': sorted(list(map(int, get_top_5_neighbors(uid)))),
+            'neighbors': sorted(get_top_5_neighbors(uid)),
             'rmse': get_rmse()
         }
 
