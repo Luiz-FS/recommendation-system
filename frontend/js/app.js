@@ -21,23 +21,31 @@
                         + "similares a seu atribuiram a filme. "
                         + "Os filmes recomendados são os que possuem as maiores notas "
                         + "atribuidas por estes usuários. "
-                        + "Os 5 usuários com perfis mais similares estão listados abaixo:";
+                        + "Os 5 usuários com perfis mais similares e seus respectivos "
+                        + "graus de similaridade (O grau de similaridade foi calculado "
+                        + "com base na distância do cosseno, esse valor varia de 0 a 1. "
+                        + "0 para não similar e 1 para totalmente similar) estão listados abaixo:";
         
         explication_text.innerText = explication;
         change_list_content(neighbors, neighbors_element);
     }
 
+    function change_rmse(rmse_data) {
+        const rmse_knn = document.getElementById('rmse_knn');
+        const rmse_svd = document.getElementById('rmse_svd');
+        const obs = "\nOBS: O RMSE calculado é o global, que usa toda a base de treino e de teste para a avaliação";
+        rmse_knn.innerText = `RMSE: ${rmse_data.rmse_knn}` + obs;
+        rmse_svd.innerText = `RMSE: ${rmse_data.rmse_svd}` + obs;
+    }
+
     function get_results() {
         const movies_knn = document.getElementById('movies_knn');
         const movies_svd = document.getElementById('movies_svd');
-        const rmse_knn = document.getElementById('rmse_knn');
-        const rmse_svd = document.getElementById('rmse_svd');
 
         request(`/api/results?uid=${form.user.value}`).then(data => {
             change_list_content(data.result_knn, movies_knn);
             change_list_content(data.result_svd, movies_svd);
-            rmse_knn.innerText = `RMSE: ${data.rmse.rmse_knn}`;
-            rmse_svd.innerText = `RMSE: ${data.rmse.rmse_svd}`;
+            change_rmse(data.rmse);
             change_explication_content(data.neighbors);
         });
         return false;

@@ -79,7 +79,7 @@ def get_top_5_movies_svd(uid):
 
 
 def get_top_5_neighbors(uid):
-    sim_matriz = algo_knn.compute_similarities()
+    sim_matriz = algo_knn.sim
     inner_uid = algo_knn.trainset.to_inner_uid(uid)
     neighbords = algo_knn.get_neighbors(iid=inner_uid, k=5)
     neighbords_cos = []
